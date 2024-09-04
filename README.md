@@ -15,6 +15,7 @@ Working of selection sort:
 This process is performed until all elements are kept on their places.
 
 Arguing the correctness
+
 Base Case: at first the sorted part is empty and is traversed and sorted.
 at start of each loop, array upto index is in sorted order.
 
