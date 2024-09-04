@@ -1,0 +1,4 @@
+Processor:	13th Gen Intel(R) Core(TM) i7-13650HX, 2600 Mhz, 14 Core(s), 20 Logical Processor(s)
+Ram: 16.0 GB
+GPU: 8.0 GB
+SSD: 1 TB
