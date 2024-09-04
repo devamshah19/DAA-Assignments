@@ -12,7 +12,7 @@ Working of selection sort:
 2. Swapping values
    - when smallest element is found, swapping is performed
   
-This process is performed until all elements are kept on their places.
+This process is performed until all elements are kept on their places (upto n-1).
 
 Arguing the correctness
 
