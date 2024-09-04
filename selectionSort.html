@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    Selection sort <br />
+    <canvas id="analysisGraph" width="500" height="500"></canvas>
+  </body>
+</html>
+
+<script>
+  function performSort() {
+    const canvas = document.getElementById("analysisGraph");
+    const ctx = canvas.getContext("2d");
+
+    const sizes = [10, 100, 1000, 10000];
+    const times = [];
+
+    // Selection sort implementation
+    function selectionSort(arr) {
+      console.log("Original array: ", arr);
+      const startTime = performance.now();
+
+      for (let i = 0; i < arr.length - 1; i++) {
+        let minIndex = i;
+
+        for (let j = i + 1; j < arr.length; j++) {
+          if (arr[j] < arr[minIndex]) {
+            minIndex = j;
+          }
+        }
+
+        if (minIndex !== i) {
+          [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+        }
+      }
+    }
+
+    function measureSortTime(array) {
+      const start = performance.now();
+      selectionSort(array);
+      console.log('sorted array:', array);
+      const end = performance.now();
+      return end - start;
+    }
+
+    sizes.forEach((size) => {
+      const array = Array.from({ length: size }, () => Math.random());
+      const time = measureSortTime(array);
+      times.push(time);
+    });
+
+    const baseX = 100;
+    const baseY = canvas.height - 50;
+    const maxTime = Math.max(...times);
+    const minTime = Math.min(...times);
+    const xAxisLabel = "Array Size";
+    const yAxisLabel = "Time (ms)";
+
+    ctx.strokeStyle = "blue";
+    ctx.lineWidth = 2;
+
+    sizes.forEach((size, index) => {
+      const x =
+        baseX + (index * (canvas.width - 2 * baseX)) / (sizes.length - 1);
+      const y =
+        baseY - ((times[index] - minTime) / (maxTime - minTime)) * (baseY - 50);
+
+      if (index === 0) {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+
+    ctx.stroke();
+
+    sizes.forEach((size, index) => {
+      const x =
+        baseX + (index * (canvas.width - 2 * baseX)) / (sizes.length - 1);
+      const y =
+        baseY - ((times[index] - minTime) / (maxTime - minTime)) * (baseY - 50);
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.fillStyle = "black";
+      ctx.fillText(size, x, baseY + 15);
+      ctx.fillText(times[index].toFixed(2), x, y - 10);
+    });
+
+    ctx.beginPath();
+    ctx.moveTo(baseX, baseY);
+    ctx.lineTo(canvas.width - baseX, baseY);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(baseX, 50);
+    ctx.lineTo(baseX, canvas.height - 50);
+    ctx.stroke();
+
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.fillText(xAxisLabel, canvas.width / 2, canvas.height - 20);
+
+    ctx.save();
+    ctx.translate(20, canvas.height / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(yAxisLabel, 0, 0);
+    ctx.restore();
+  }
+
+  performSort();
+</script>
