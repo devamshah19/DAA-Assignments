@@ -9,7 +9,6 @@
 <body>
     <div id="plot" style="width: 80%; height: 500px; margin: auto;"></div>
     <script>
-        // Define the function f(n)
         function f(n) {
             let x = 1;
             for (let i = 0; i < n; i++) {
@@ -20,15 +19,13 @@
             return x;
         }
 
-        // Measure execution time using performance.now()
         function noteTime(n) {
             const start = performance.now();
             f(n);
             const end = performance.now();
-            return end - start; // Returns the elapsed time in milliseconds
+            return end - start;
         }
 
-        // Collect timing data
         const nValues = [];
         const timings = [];
         
