@@ -9,33 +9,25 @@
 <body>
     <div id="plot"></div>
     <script>
-        // Function to calculate the number of operations
+        
         function calculateOperations(n) {
             return n;
         }
 
-        // Data arrays
         let nValues = [];
         let operations = [];
 
-        // Generate data points
         for (let n = 1; n <= 500; n++) {
             nValues.push(n);
             operations.push(calculateOperations(n));
         }
 
-        // Define a threshold for dynamic n₀
         const threshold = 50;
 
-        // Dynamically calculate n₀ where operations exceed the threshold
         let n0 = nValues.find(n => calculateOperations(n) > threshold);
-
-        // If no such n₀ is found, set it to a default value or handle it
         if (n0 === undefined) {
-            n0 = nValues[nValues.length - 1]; // Use the last value if none found
+            n0 = nValues[nValues.length - 1];
         }
-
-        // Data for Plotly
         let trace1 = {
             x: nValues,
             y: operations,
@@ -63,7 +55,6 @@
             name: `n₀ = ${n0}`
         };
 
-        // Plot layout
         let layout = {
             title: '',
             xaxis: {
@@ -97,7 +88,6 @@
             ]
         };
 
-        // Create the plot
         Plotly.newPlot('plot', [trace1, trace2], layout);
     </script>
 </body>
