@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n_0 plot</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div id="plot"></div>
+    <script>
+        // Function to calculate the number of operations
+        function calculateOperations(n) {
+            return n;
+        }
+
+        // Data arrays
+        let nValues = [];
+        let operations = [];
+
+        // Generate data points
+        for (let n = 1; n <= 500; n++) {
+            nValues.push(n);
+            operations.push(calculateOperations(n));
+        }
+
+        // Define a threshold for dynamic n₀
+        const threshold = 50;
+
+        // Dynamically calculate n₀ where operations exceed the threshold
+        let n0 = nValues.find(n => calculateOperations(n) > threshold);
+
+        // If no such n₀ is found, set it to a default value or handle it
+        if (n0 === undefined) {
+            n0 = nValues[nValues.length - 1]; // Use the last value if none found
+        }
+
+        // Data for Plotly
+        let trace1 = {
+            x: nValues,
+            y: operations,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Number of Operations (x = n^2)',
+            line: {
+                color: 'rgba(75, 192, 192, 1)',
+                width: 2
+            },
+            marker: {
+                color: 'rgba(75, 192, 192, 1)'
+            }
+        };
+
+        let trace2 = {
+            x: [n0, n0],
+            y: [0, Math.max(...operations)],
+            mode: 'lines',
+            line: {
+                color: 'red',
+                width: 2,
+                dash: 'dash'
+            },
+            name: `n₀ = ${n0}`
+        };
+
+        // Plot layout
+        let layout = {
+            title: '',
+            xaxis: {
+                title: 'n'
+            },
+            yaxis: {
+                title: 'Number of Operations'
+            },
+            shapes: [
+                {
+                    type: 'line',
+                    x0: n0,
+                    x1: n0,
+                    y0: 0,
+                    y1: Math.max(...operations),
+                    line: {
+                        color: 'red',
+                        width: 2,
+                        dash: 'dash'
+                    }
+                }
+            ],
+            annotations: [
+                {
+                    x: n0,
+                    y: Math.max(...operations) * 0.9,
+                    text: `n₀ = ${n0}`,
+                    showarrow: true,
+                    arrowhead: 2
+                }
+            ]
+        };
+
+        // Create the plot
+        Plotly.newPlot('plot', [trace1, trace2], layout);
+    </script>
+</body>
+</html>

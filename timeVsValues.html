@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function Timing Plot with Plotly</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div id="plot" style="width: 80%; height: 500px; margin: auto;"></div>
+    <script>
+        // Define the function f(n)
+        function f(n) {
+            let x = 1;
+            for (let i = 0; i < n; i++) {
+                for (let j = 0; j < n; j++) {
+                    x += 1;
+                }
+            }
+            return x;
+        }
+
+        // Measure execution time using performance.now()
+        function noteTime(n) {
+            const start = performance.now();
+            f(n);
+            const end = performance.now();
+            return end - start; // Returns the elapsed time in milliseconds
+        }
+
+        // Collect timing data
+        const nValues = [];
+        const timings = [];
+        
+        for (let n = 1; n <= 500; n++) {
+            const time = noteTime(n);
+            nValues.push(n);
+            timings.push(time);
+        }
+
+        const trace1 = {
+            x: nValues,
+            y: timings,
+            mode: 'lines',
+            type: 'scatter',
+            name: 'Timing Data',
+            marker: { color: 'red' }
+        };
+
+        const layout = {
+            title: 'Function Timing vs n - Values',
+            xaxis: { title: 'n - Values' },
+            yaxis: { title: 'Time (ms)' }
+        };
+
+        Plotly.newPlot('plot', [trace1], layout);
+    </script>
+</body>
+</html>
