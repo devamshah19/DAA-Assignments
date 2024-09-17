@@ -1,0 +1,32 @@
+<html>
+  <body>
+    <br><br><button onclick="getValues()">Start entering values</button>
+    <script>
+      function getValues() {
+        const rows = parseInt(prompt("Enter the number of rows (k):"));
+        const cols = parseInt(prompt("Enter the number of columns (n):"));
+
+        const array2D = Array.from({ length: rows }, () => Array(cols));
+        const finArray = [];
+
+        for (let i = 0; i < rows; i++) {
+          for (let j = 0; j < cols; j++) {
+            const value = parseInt(
+              prompt(`Enter value for element ${j + 1} for array ${i + 1}: `)
+            );
+            array2D[i][j] = value;
+            finArray.push(value);
+          }
+        }
+
+        document.write("Unsorted array: ", finArray);
+        sort(finArray);
+      }
+
+      function sort(arr) {
+        const sortedArray = arr.sort((a, b) => a - b);
+        document.write("<br><br>Sorted Array: ", sortedArray);
+      }
+    </script>
+  </body>
+</html>

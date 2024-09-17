@@ -1,0 +1,33 @@
+<html>
+  <body>
+    <br /><br /><button onclick="getValues()">Start entering values</button>
+    <script>
+      function getValues() {
+        const len = parseInt(prompt("Enter the length of array: "));
+        const arr = new Array(len);
+
+        const finArray = [];
+        for (let i = 0; i < len; i++) {
+          arr[i] = parseInt(prompt(`Enter value for element ${i + 1}: `));
+        }
+
+        document.write("Original Arrar: ",arr,"<br><br>Unique Values: ",removeDupl(arr));
+      }
+
+      function removeDupl(arr) {
+        let uniqueArr = [];
+        for (let i = 0; i < arr.length; i++) {
+          let isDuplicate = false;
+          for (let j = 0; j < uniqueArr.length; j++) {
+            if (arr[i] === uniqueArr[j]) {
+              isDuplicate = true;
+              break;
+            }
+          }
+          if (!isDuplicate) uniqueArr.push(arr[i]);
+        }  
+        return uniqueArr;
+      }
+    </script>
+  </body>
+</html>
