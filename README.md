@@ -3,7 +3,6 @@ Assignments of DAA - 5311
 
 
 Screenshots of creating, adding and popping the elements in a heap
-![Screenshot 2024-09-10 225615](https://github.com/user-attachments/assets/3737c778-0114-48b2-ab47-b21111fc36f6)
 
 ![Screenshot 2024-09-24 205126](https://github.com/user-attachments/assets/73fb4196-f741-43e1-b2d7-94489d123dc5)
 
