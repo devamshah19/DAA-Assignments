@@ -1,0 +1,172 @@
+<html>
+  <body>
+    <h1>Min Heap Demo</h1>
+
+    <div>
+      <div>
+        <h2>Build Heap from Array</h2>
+        <p>Enter comma-separated values</p>
+        <input type="text" id="buildArray" />
+        <button onclick="buildHeap()">Build Heap</button>
+      </div>
+
+      <h2>Insert Value</h2>
+      <input type="number" id="inputValue" placeholder="Enter a number" />
+      <button onclick="insertValue()">Insert</button>
+    </div>
+
+    <div>
+      <h2>Pop Root Value</h2>
+      <button onclick="popValue()">Pop</button>
+    </div>
+
+    <h2>Current Heap</h2>
+    <div id="heapDisplay">Heap: []</div>
+  </body>
+
+  <script>
+    class MinHeap {
+      constructor() {
+        this.heap = [];
+      }
+
+      childLeft(index) {
+        return (index << 1) + 1;
+      }
+
+      childRight(index) {
+        return (index << 1) + 2;
+      }
+
+      parent(index) {
+        return (index - 1) >> 1;
+      }
+
+      insert(value) {
+        this.heap.push(value);
+        this._heapifyUp(this.heap.length - 1);
+      }
+
+      build_min_heap(array) {
+        this.heap = array;
+        for (let i = this.parent(this.heap.length - 1); i >= 0; i--) {
+          this._heapifyDown(i);
+        }
+      }
+
+      _heapifyUp(index) {
+        while (index > 0 && this.heap[index] < this.heap[this.parent(index)]) {
+          [this.heap[index], this.heap[this.parent(index)]] = [
+            this.heap[this.parent(index)],
+            this.heap[index],
+          ];
+          index = this.parent(index);
+        }
+      }
+
+      _heapifyDown(index) {
+        const size = this.heap.length;
+        while (true) {
+          let smallest = index;
+          const left = this.childLeft(index);
+          const right = this.childRight(index);
+
+          if (left < size && this.heap[left] < this.heap[smallest]) {
+            smallest = left;
+          }
+          if (right < size && this.heap[right] < this.heap[smallest]) {
+            smallest = right;
+          }
+
+          if (smallest === index) break;
+
+          [this.heap[index], this.heap[smallest]] = [
+            this.heap[smallest],
+            this.heap[index],
+          ];
+          index = smallest;
+        }
+      }
+
+      pop() {
+        if (this.heap.length === 0) throw new Error("Heap is empty.");
+        const root = this.heap[0];
+        const lastElement = this.heap.pop();
+        if (this.heap.length > 0) {
+          this.heap[0] = lastElement;
+          this._heapifyDown(0);
+        }
+        return root;
+      }
+
+      peek() {
+        if (this.heap.length === 0) throw new Error("Heap is empty.");
+        return this.heap[0];
+      }
+
+      size() {
+        return this.heap.length;
+      }
+
+      isEmpty() {
+        return this.heap.length === 0;
+      }
+
+      toString() {
+        return JSON.stringify(this.heap);
+      }
+
+      sortedArray() {
+        const result = [];
+        const originalHeap = [...this.heap]; // Preserve the original heap
+        while (!this.isEmpty()) {
+          result.push(this.pop());
+        }
+        this.heap = originalHeap; // Restore original heap
+        return result;
+      }
+    }
+
+    // Example usage in a web context
+    const minHeap = new MinHeap();
+
+    function insertValue() {
+      const value = parseInt(document.getElementById("inputValue").value);
+      minHeap.insert(value);
+      updateHeapDisplay();
+      document.getElementById("inputValue").value = "";
+    }
+
+    function popValue() {
+      if (!minHeap.isEmpty()) {
+        const poppedValue = minHeap.pop();
+        updateHeapDisplay();
+        alert(`Popped value: ${poppedValue}`);
+      } else {
+        alert("Heap is empty.");
+      }
+    }
+
+    function buildHeap() {
+      const values = document
+        .getElementById("buildArray")
+        .value.split(",")
+        .map(Number);
+      minHeap.build_min_heap(values);
+      updateHeapDisplay();
+    }
+
+    function displaySortedArray() {
+      const sorted = minHeap.sortedArray();
+      document.getElementById(
+        "sortedDisplay"
+      ).innerText = `Sorted Array: ${sorted}`;
+    }
+
+    function updateHeapDisplay() {
+      document.getElementById(
+        "heapDisplay"
+      ).innerText = `Heap: ${minHeap.toString()}`;
+    }
+  </script>
+</html>
