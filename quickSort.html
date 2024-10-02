@@ -1,0 +1,45 @@
+<html>
+    <body></body>
+  <script>
+    function swap(items, leftIndex, rightIndex) {
+      var temp = items[leftIndex];
+      items[leftIndex] = items[rightIndex];
+      items[rightIndex] = temp;
+    }
+    
+    // Fixed pivot selection
+    function partition(arr, left, right) {
+      var items = arr;
+      var pivot = items[left],
+        i = left,
+        j = right;
+      while (i <= j) {
+        while (items[i] < pivot) { i++; } 
+        while (items[j] > pivot) { j--; }
+        if (i <= j) {
+          swap(items, i, j);
+          i++;
+          j--;
+        }
+      }
+      return i;
+    }
+
+    function quickSort(arr, left, right) {
+      var index;
+      var items = arr;
+      if (items.length > 1) {
+        index = partition(items, left, right);
+        if (left < index - 1) { quickSort(items, left, index - 1); }
+        if (index < right) { quickSort(items, index, right); }
+      }
+      return items;
+    }
+
+    let arr = [3, 9, 2, 5, 11, 4, 100, 20];
+    document.write("Unsorted Array: " + arr + "<br>Sorted Array using fixed pivot: " + quickSort(arr, 0, arr.length - 1))
+
+    let arr1 = [3, 9, 2, 5, 11, 4, 100, 20];
+    document.write("<br><br>Unsorted Array: " + arr1 + "<br>Sorted Array using random pivot: " + quickSortRandomPivot(arr1, 0, arr1.length - 1))
+  </script>
+</html>

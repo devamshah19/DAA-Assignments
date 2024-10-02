@@ -1,0 +1,109 @@
+<html>
+  <body>
+    <canvas id="benchmarkChart" width="500" height="200"></canvas>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    function quickSort(arr) {
+      if (arr.length <= 1) return arr;
+
+      const pivot = arr[0]; // Using the first element as pivot
+      const left = [];
+      const right = [];
+
+      for (let i = 1; i < arr.length; i++) {
+        if (arr[i] < pivot) {
+          left.push(arr[i]);
+        } else {
+          right.push(arr[i]);
+        }
+      }
+
+      var x = [...quickSort(left), pivot, ...quickSort(right)]
+      return x;
+    }
+
+    function generateBestCase(n) {
+      return Array.from({ length: n }, (_, i) => i);
+    }
+
+    function generateWorstCase(n) {
+      return Array.from({ length: n }, (_, i) => n - i);
+    }
+
+    function generateAverageCase(n) {
+      return Array.from({ length: n }, () => Math.floor(Math.random() * n));
+    }
+
+    function benchmarkQuicksort(sortFunction, generateInput, sizes) {
+      const results = [];
+
+      sizes.forEach((size) => {
+        const input = generateInput(size);
+        const startTime = performance.now();
+        sortFunction(input);
+        const endTime = performance.now();
+        results.push({ size, time: endTime - startTime });
+      });
+
+      return results;
+    }
+
+    const sizes = [100, 200, 300, 400, 500];
+
+    const bestCaseResults = benchmarkQuicksort(
+      quickSort,
+      generateBestCase,
+      sizes
+    );
+    const worstCaseResults = benchmarkQuicksort(
+      quickSort,
+      generateWorstCase,
+      sizes
+    );
+    const averageCaseResults = benchmarkQuicksort(
+      quickSort,
+      generateAverageCase,
+      sizes
+    );
+
+    const ctx = document.getElementById("benchmarkChart").getContext("2d");
+
+    const bestTimes = bestCaseResults.map((result) => result.time);
+    const worstTimes = worstCaseResults.map((result) => result.time);
+    const averageTimes = averageCaseResults.map((result) => result.time);
+
+    const chart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: sizes,
+        datasets: [
+          {
+            label: "Best Case",
+            data: bestTimes,
+            borderColor: "green",
+            fill: false,
+          },
+          {
+            label: "Worst Case",
+            data: worstTimes,
+            borderColor: "red",
+            fill: false,
+          },
+          {
+            label: "Average Case",
+            data: averageTimes,
+            borderColor: "blue",
+            fill: false,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          x: { title: { display: true, text: "Input Size (n)" } },
+          y: { title: { display: true, text: "Time (ms)" } },
+        },
+      },
+    });
+  </script>
+</html>
