@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quickselect Example</title>
+</head>
+<body>
+    <script>
+        function swap(items, leftIndex, rightIndex) {
+            var temp = items[leftIndex];
+            items[leftIndex] = items[rightIndex];
+            items[rightIndex] = temp;
+        }
+
+        function partition(arr, left, right, pivotIndex) {
+            var items = arr;
+            var pivot = items[pivotIndex];
+            swap(items, pivotIndex, right);
+            var storeIndex = left;
+
+            for (var i = left; i < right; i++) {
+                if (items[i] < pivot) {
+                    swap(items, storeIndex, i);
+                    storeIndex++;
+                }
+            }
+            swap(items, storeIndex, right);
+            return storeIndex;
+        }
+
+        function quickselect(arr, left, right, i) {
+            if (left === right) {
+                return arr[left];
+            }
+
+            var pivotIndex = Math.floor(Math.random() * (right - left + 1)) + left;
+            pivotIndex = partition(arr, left, right, pivotIndex);
+
+            if (i === pivotIndex) {
+                return arr[i];
+            } else if (i < pivotIndex) {
+                return quickselect(arr, left, pivotIndex - 1, i);
+            } else {
+                return quickselect(arr, pivotIndex + 1, right, i);
+            }
+        }
+
+        function quickSort(arr, left, right) {
+            if (left < right) {
+                var pivotIndex = Math.floor(Math.random() * (right - left + 1)) + left;
+                pivotIndex = partition(arr, left, right, pivotIndex);
+                quickSort(arr, left, pivotIndex - 1);
+                quickSort(arr, pivotIndex + 1, right);
+            }
+            return arr;
+        }
+
+        function findIthOrderStatistic(arr, i) {
+            if (i < 0 || i >= arr.length) {
+                throw new Error("Index out of bounds");
+            }
+            return quickselect(arr, 0, arr.length - 1, i);
+        }
+
+        let arr = [3, 9, 2, 5, 11, 4, 100, 20];
+
+        document.write("Unsorted Array: " + arr + "<br>");
+        const sortedArray = quickSort([...arr], 0, arr.length - 1);
+        document.write("Sorted Array: " + sortedArray.join(", ") + "<br>");
+        
+        let i = parseInt(prompt(`The sorted array is ${sortedArray} \nEnter a value for i (1 to ${arr.length}):`)) - 1;
+        if (i < 0 || i >= arr.length) {
+            document.write("Invalid input. Please enter a number between 1 and " + arr.length + ".");
+        } else {
+            const orderStatistic = findIthOrderStatistic(arr, i);
+            document.write("The " + (i + 1) + "-th order statistic is: " + orderStatistic + "<br>");
+        }
+    </script>
+</body>
+</html>
