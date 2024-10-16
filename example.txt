@@ -7,5 +7,4 @@ we want to find the 6
 The array is partitioned around a chosen pivot. Let's say after partitioning, the array becomes 
 2, 3, 4, 5, 9, 11, 20, 100
 11 at index 6
-3. Since 𝑖(6) 
-i(6) matches the pivot index, we have found our element, which is 11
+Since i(6) matches the pivot index, we have found our element, which is 11
