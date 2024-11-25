@@ -15,7 +15,7 @@ class RedBlackTree {
 
     private Node root, TNULL;
 
-    public Main() {
+    public RedBlackTree() {
         TNULL = new Node(0);
         TNULL.color = BLACK;
         root = TNULL;
